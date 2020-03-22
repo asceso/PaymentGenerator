@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -68,8 +68,8 @@ namespace PaymentCreator
                 if (i == 5) settings.Add(pd4Settings.Substring(tmp + 1));
                 else settings.Add(pd4Settings.Substring(tmp + 2));
             }
-            adjustNum = settings[5]; BIK = settings[4]; bank = settings[3];
-            payNumber = settings[2]; INN = settings[1]; nameIP = settings[0];
+            adjustNum = settings[0]; BIK = settings[1]; bank = settings[2];
+            payNumber = settings[3]; INN = settings[4]; nameIP = settings[5];
             settings.Clear();
             payments = new string[paySettingsCount, 7];
             //формируем настройки платежа
@@ -102,8 +102,9 @@ namespace PaymentCreator
             int FIOSettingsEnd = FIOSettings.IndexOf("#FIOSettingsEnd");
             FIOSettings = FIOSettings.Remove(FIOSettingsEnd - 3);
             //ищем последнее вхождение символа
-            int indexFIO=FIOSettings.LastIndexOf("\r"); 
+            int indexFIO=FIOSettings.LastIndexOf("\r");
             //проверяем пока символ присутствует
+            FIOBox.Items.Clear();
             while (indexFIO != -1)
             {
                 FIOSettings = FIOSettings.Remove(indexFIO);//удаляем с последнего вхождения
@@ -113,7 +114,6 @@ namespace PaymentCreator
             }
             FIOBox.Items.Add(FIOSettings);//добавляем оставшийся
             FIOBox.Sorted = true;
-            FIOBox.SelectedIndex = 0;
             
         }
         void fill___(Table table,int tableRow,int row,bool newLine)
@@ -141,10 +141,11 @@ namespace PaymentCreator
         }
         string getFIO()
         {
-            string result = FIOBox.Items[FIOBox.SelectedIndex].ToString();
-            if (result.StartsWith("\r\n")) result = result.Substring(2);
-            if (result.EndsWith("\r\n")) result = result.Remove(result.Length - 2);
-            return result;
+            //string result = FIOBox.Items[FIOBox.SelectedIndex].ToString();
+            //if (result.StartsWith("\r\n")) result = result.Substring(2);
+            //if (result.EndsWith("\r\n")) result = result.Remove(result.Length - 2);
+            //return result;
+            return FIOBox.Text;
         }
         string GetSum()
         {
@@ -450,11 +451,9 @@ namespace PaymentCreator
             word.StartInfo.FileName = path;
             word.Start();
             Hide();
-            notify.Visible = true;
             word.WaitForExit();
             File.Delete(path);
             Show();
-            notify.Visible = false;
             //Application.Exit();
         }
         private void courseSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -489,9 +488,5 @@ namespace PaymentCreator
             }
             paySelect.SelectedIndex = 0;
         }
-        private void notify_MouseDoubleClick(object sender, MouseEventArgs e)
-        { Show(); }
-        private void notify_Click(object sender, EventArgs e)
-        { Show(); }
     }
 }
