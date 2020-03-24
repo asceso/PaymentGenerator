@@ -141,11 +141,10 @@ namespace PaymentCreator
         }
         string getFIO()
         {
-            //string result = FIOBox.Items[FIOBox.SelectedIndex].ToString();
-            //if (result.StartsWith("\r\n")) result = result.Substring(2);
-            //if (result.EndsWith("\r\n")) result = result.Remove(result.Length - 2);
-            //return result;
-            return FIOBox.Text;
+            string result = FIOBox.Text;
+            if (result.StartsWith("\r\n")) result = result.Substring(2);
+            if (result.EndsWith("\r\n")) result = result.Remove(result.Length - 2);
+            return result;
         }
         string GetSum()
         {
